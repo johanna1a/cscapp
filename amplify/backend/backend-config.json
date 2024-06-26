@@ -1,1 +1,9 @@
-{}
+{
+  "function": {
+    "LambdaSendMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  }
+}

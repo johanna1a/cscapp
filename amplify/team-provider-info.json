@@ -10,6 +10,11 @@
       "StackName": "amplify-cscfinal-staging-d0298",
       "StackId": "arn:aws:cloudformation:us-east-1:381492085620:stack/amplify-cscfinal-staging-d0298/b4f963c0-335e-11ef-a500-0e07d2ec8cbd",
       "AmplifyAppId": "d1e64yf5rpi8ug"
+    },
+    "categories": {
+      "function": {
+        "LambdaSendMessage": {}
+      }
     }
   }
 }
