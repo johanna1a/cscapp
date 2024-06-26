@@ -1,20 +1,4 @@
-{/*}
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-  }
-*/}
-  
-  {/*.chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  */}
-
-  .chat-container {
+.chat-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
