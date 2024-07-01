@@ -1,10 +1,7 @@
-//import React, {useState, UseEffect} from 'react'
 import React, {useState} from 'react'
 import './ChatContainer.css';
 import { Amplify} from 'aws-amplify';
 import config from './aws-exports';
-//import { withAuthenticator} from '@aws-amplify/ui-react';
-import {get} from 'aws-amplify/api'
 
 
 Amplify.configure(config);
@@ -31,21 +28,6 @@ const ChatContainer = () => {
     if (message) {
       setMessages([...messages, { sender: 'user',text: message }]);
       setUserInput('');
-      
-
-      //try{
-
-      //  const restOperation = get({
-      //    apiName: 'APINEW',
-     //     path: '/sendmessage',
-   // });
-
-    //const response = await restOperation.response;
-    //console.log('GET call succedded: ', response)
-
-     // }catch(e){
-     //   console.log('GET call failed: ', JSON.parse(e.response.body))
-   //   }   
   }};
 
 
