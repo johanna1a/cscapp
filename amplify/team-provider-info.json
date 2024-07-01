@@ -9,7 +9,23 @@
       "UnauthRoleName": "amplify-cscfinal-staging-d0298-unauthRole",
       "StackName": "amplify-cscfinal-staging-d0298",
       "StackId": "arn:aws:cloudformation:us-east-1:381492085620:stack/amplify-cscfinal-staging-d0298/b4f963c0-335e-11ef-a500-0e07d2ec8cbd",
-      "AmplifyAppId": "d1e64yf5rpi8ug"
+      "AmplifyAppId": "d1e64yf5rpi8ug",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-cscfinal-staging-d0298-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "function": {
+        "LambdaSendMessage": {
+          "deploymentBucketName": "amplify-cscfinal-staging-d0298-deployment",
+          "s3Key": "amplify-builds/LambdaSendMessage-572f67396731494d2f78-build.zip"
+        }
+      },
+      "auth": {
+        "cscfinal": {}
+      },
+      "api": {
+        "SendMessageApi": {},
+        "APINEW": {}
+      }
     }
   }
 }
