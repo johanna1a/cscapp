@@ -1,6 +1,16 @@
 //import React, {useState, UseEffect} from 'react'
 import React, {useState} from 'react'
 import './ChatContainer.css';
+import { Amplify} from 'aws-amplify';
+import config from './aws-exports';
+//import { withAuthenticator} from '@aws-amplify/ui-react';
+import {get} from 'aws-amplify/api'
+
+
+Amplify.configure(config);
+
+
+
 
 const ChatContainer = () => {
 
@@ -11,21 +21,36 @@ const ChatContainer = () => {
     setUserInput(e.target.value);
   };
 
-  const sendMessage = () => {
+
+
+
+
+
+  const sendMessage = async () => {
     const message = userInput.trim();
     if (message) {
-      setMessages([...messages, { sender: 'user', text: message }]);
+      setMessages([...messages, { sender: 'user',text: message }]);
       setUserInput('');
-      // Simulate a delay before showing the bot's response
-      setTimeout(() => {
-        setMessages([
-          ...messages,
-          { sender: 'user', text: message },
-          { sender: 'bot', text: 'This is a sample response from the bot.' },
-        ]);
-      }, 1000);
-    }
-  };
+      
+
+      //try{
+
+      //  const restOperation = get({
+      //    apiName: 'APINEW',
+     //     path: '/sendmessage',
+   // });
+
+    //const response = await restOperation.response;
+    //console.log('GET call succedded: ', response)
+
+     // }catch(e){
+     //   console.log('GET call failed: ', JSON.parse(e.response.body))
+   //   }   
+  }};
+
+
+
+
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
