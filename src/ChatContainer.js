@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import './ChatContainer.css';
-import { Amplify} from 'aws-amplify';
-import awsconfig from './aws-exports';
+//import { Amplify} from 'aws-amplify';
+//import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+//Amplify.configure(awsconfig);
 
 
 
