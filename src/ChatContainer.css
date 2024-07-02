@@ -11,8 +11,7 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    align-items: center; /* Center messages horizontally */
   }
   
   .chat-input {
@@ -29,43 +28,50 @@
     border-radius: 5px;
   }
   
-  .chat-input button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .user, .bot {
+
+  .user,
+  .bot {
     background-color: #f0f0f0;
     color: #333;
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
+    margin-bottom: 10px; /* Add some spacing between messages */
+    align-self: center; /* Center messages horizontally */
   }
   
-  .bot {
-    background-color: #4CAF50;
+  .user {
+    background-color: #007bff;
     color: #fff;
   }
-  
-  .loading-indicator {
-    display: none;
+
+
+  .chat-input button {
     margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Add some spacing below the loading indicator */
   }
   
   .spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
+    border-top: 4px solid #007bff; /* Change the spinner color to blue */
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
   }
-  
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -108,8 +114,8 @@
   
   
   .show-sources-button {
-    background-color: #ccc;
-    color: #333;
+    background-color: #007bff;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;

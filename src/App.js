@@ -12,6 +12,7 @@ function App({signOut, user}) {
   return (
     <>
 <button onClick={signOut}>Sign Out</button>
+
 <ChatContainer />
 
     </>
