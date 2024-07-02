@@ -1,5 +1,4 @@
 import ChatContainer from './ChatContainer';
-import { withAuthenticator} from '@aws-amplify/ui-react';
 
 
 
@@ -11,5 +10,5 @@ function App() {
   );
 }
 
-export default withAuthenticator(App);
+export default App;
 
