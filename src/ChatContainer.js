@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
 import './ChatContainer.css';
+import { fetchAuthSession} from '@aws-amplify/auth';
 
 
-
+const apiGatewayEndpoint = 'https://6mm48fcg14.execute-api.us-east-1.amazonaws.com/dev';
 
 
 const ChatContainer = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
@@ -14,17 +16,75 @@ const ChatContainer = () => {
     setUserInput(e.target.value);
   };
 
+  
+  const getAccessToken = async () => {
+    try {
+      const session = await fetchAuthSession();
+      console.log("access token", session.tokens.accessToken)
+      return session.tokens.accessToken;
+    } catch (error) {
+      console.log('Error getting access token:', error);
+      return null;
+    }
+  };
+
+  
 
 
 
+  async function fetchChatbotResponse(message, accessToken) {
+    const response = await fetch(`${apiGatewayEndpoint}?prompt=${encodeURIComponent(message)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const responseBody = JSON.parse(data.body);
+    const desiredResponse = responseBody.generated_text.text;
+    const usedDocuments = responseBody.object_uris || [];
+
+    return { response: desiredResponse, documents: usedDocuments };
+}
 
 
   const sendMessage = async () => {
+
     const message = userInput.trim();
     if (message) {
-      setMessages([...messages, { sender: 'user',text: message }]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'user', text: message }
+      ]);
+
       setUserInput('');
-  }};
+      setIsLoading(true);
+      try {
+        const accessToken = await getAccessToken();
+
+        if (accessToken) {
+          const {response, documents} = await fetchChatbotResponse(message, accessToken)
+
+          setMessages((prevMessages) => [
+            ...prevMessages, 
+            {sender: 'bot', text: response}
+          ]);
+        } else {
+          console.log('Access token not available');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }finally{
+        setIsLoading(false);
+      }
+    }
+  };
 
 
 
@@ -45,6 +105,12 @@ const ChatContainer = () => {
               {message.text}
             </div>
           ))}
+           {isLoading && (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+          </div>
+        )}
+
         </div>
       <div className="chat-input">
         <input type="text" placeholder="Type your message..." id="message-input" value={userInput} onChange={handleUserInput} onKeyDown={handleKeyPress}/>
@@ -52,9 +118,6 @@ const ChatContainer = () => {
         <button id="show-sources-button" className="show-sources-button">
           Show Sources
         </button>
-        <div className="loading-indicator" id="loading-indicator">
-          <div className="spinner"></div>
-        </div>
       </div>
     </>
   );
