@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import './ChatContainer.css';
-import { fetchAuthSession} from '@aws-amplify/auth';
-
+import { fetchAuthSession, } from '@aws-amplify/auth';
 
 const apiGatewayEndpoint = 'https://6mm48fcg14.execute-api.us-east-1.amazonaws.com/dev';
 
@@ -20,8 +19,9 @@ const ChatContainer = () => {
   const getAccessToken = async () => {
     try {
       const session = await fetchAuthSession();
-      console.log("access token", session.tokens.accessToken)
-      return session.tokens.accessToken;
+
+      //console.log("access token", session.tokens.idToken)
+      return session.tokens.idToken;
     } catch (error) {
       console.log('Error getting access token:', error);
       return null;
@@ -67,7 +67,7 @@ const ChatContainer = () => {
       setIsLoading(true);
       try {
         const accessToken = await getAccessToken();
-
+       // console.log(accessToken)
         if (accessToken) {
           const {response, documents} = await fetchChatbotResponse(message, accessToken)
 
