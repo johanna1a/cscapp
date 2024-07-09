@@ -127,3 +127,39 @@
   margin-top: 10px;
   display: none;
   }
+
+
+  .bot-message-container {
+    position: relative;
+  }
+  
+  .bot-message {
+    display: flex;
+    align-items: center;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+    margin-bottom: 10px;
+    align-self: center;
+  }
+  
+  .document-sources {
+    margin-top: 10px;
+  }
+  
+  .document-sources h4 {
+    margin-top: 0;
+  }
+  
+  .document-sources ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .document-sources li {
+    margin-bottom: 5px;
+  }
+  
