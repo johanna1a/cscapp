@@ -5,12 +5,17 @@ import { fetchAuthSession, } from '@aws-amplify/auth';
 const apiGatewayEndpoint = 'https://6mm48fcg14.execute-api.us-east-1.amazonaws.com/dev';
 
 
-const ChatContainer = () => {
+const ChatContainer = ({signOut}) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [showDocumentSources, setShowDocumentSources] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
 
+
+  const toggleDocumentSources = () => {
+    setShowDocumentSources((prevState) => !prevState);
+  };
+  
   const handleUserInput = (e) => {
     setUserInput(e.target.value);
   };
@@ -50,8 +55,8 @@ const ChatContainer = () => {
     const desiredResponse = responseBody.generated_text.text;
     const usedDocuments = responseBody.object_uris || [];
 
-    return { response: desiredResponse, documents: usedDocuments };
-}
+    return { response: desiredResponse, documents: usedDocuments};
+  }
 
 
   const sendMessage = async () => {
@@ -67,25 +72,24 @@ const ChatContainer = () => {
       setIsLoading(true);
       try {
         const accessToken = await getAccessToken();
-       // console.log(accessToken)
         if (accessToken) {
-          const {response, documents} = await fetchChatbotResponse(message, accessToken)
-
+          const { response, documents} = await fetchChatbotResponse(message, accessToken);
+          console.log(documents);
+    
           setMessages((prevMessages) => [
-            ...prevMessages, 
-            {sender: 'bot', text: response}
+            ...prevMessages,
+            { sender: 'bot', text: response },
           ]);
         } else {
           console.log('Access token not available');
         }
       } catch (error) {
         console.error('Error:', error);
-      }finally{
+      } finally {
         setIsLoading(false);
       }
     }
-  };
-
+    };
 
 
 
@@ -96,15 +100,20 @@ const ChatContainer = () => {
     }
   };
 
+
+
   return (
     <>
     <div className="chat-container">
-      <div className="chat-messages"></div>
-      {messages.map((message, index) => (
-            <div key={index} className={`${message.sender} message`}>
-              {message.text}
-            </div>
-          ))}
+      <div className="chat-header">
+        <button onClick={signOut}>Sign Out</button>
+      </div>
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <div key={index} className={`${message.sender} message`}>
+            {message.text}
+          </div>
+        ))}
            {isLoading && (
           <div className="loading-indicator">
             <div className="spinner"></div>
@@ -115,10 +124,9 @@ const ChatContainer = () => {
       <div className="chat-input">
         <input type="text" placeholder="Type your message..." id="message-input" value={userInput} onChange={handleUserInput} onKeyDown={handleKeyPress}/>
         <button id="send-button" onClick={sendMessage}>Send</button>
-        <button id="show-sources-button" className="show-sources-button">
-          Show Sources
-        </button>
       </div>
+      </div>
+
     </>
   );
 };
