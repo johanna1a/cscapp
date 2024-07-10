@@ -30,9 +30,6 @@ const ChatContainer = ({signOut}) => {
   };
 
   
-
-
-
   async function fetchChatbotResponse(message, accessToken) {
     const response = await fetch(`${apiGatewayEndpoint}?prompt=${encodeURIComponent(message)}`, {
       method: 'GET',
@@ -104,42 +101,51 @@ const ChatContainer = ({signOut}) => {
       <div className="chat-header">
         <button onClick={signOut}>Sign Out</button>
       </div>
-
-      <div className="chat-messages">
-  {messages.map((message) => (
-    <div  className={`${message.sender} message`}>
-      <div>{message.text}</div>
-      {message.sender === 'bot' && message.documents.length > 0 && (
-        <div className="document-sources">
-          <h4>Document Sources:</h4>
-          <ul>
-            {message.documents.map((document, index) => (
-            <li key={index}>
-            <a href={document} target="_blank" rel="noopener noreferrer">
-              {document}
-              </a>
-              </li>            ))}
-          </ul>
+      <div className="chat-messages-wrapper">
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <div key={index} className={`message-container ${message.sender}`}>
+              <div className="message-logo"></div>
+              <div className="message-content">
+                <div>{message.text}</div>
+                {message.sender === 'bot' && message.documents.length > 0 && (
+                  <div className="document-sources">
+                    <h4>Document Sources:</h4>
+                    <ul>
+                      {message.documents.map((document, docIndex) => (
+                        <li key={docIndex}>
+                          <a href={document} target="_blank" rel="noopener noreferrer">
+                            {document}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="loading-indicator">
+              <div className="spinner"></div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  ))}
-           {isLoading && (
-          <div className="loading-indicator">
-            <div className="spinner"></div>
-          </div>
-        )}
-        </div>
-
-
+      </div>
       <div className="chat-input">
-        <input type="text" placeholder="Type your message..." id="message-input" value={userInput} onChange={handleUserInput} onKeyDown={handleKeyPress}/>
+        <input 
+          type="text" 
+          placeholder="Type your message..." 
+          id="message-input" 
+          value={userInput} 
+          onChange={handleUserInput} 
+          onKeyDown={handleKeyPress}
+        />
         <button id="send-button" onClick={sendMessage}>Send</button>
       </div>
-      </div>
-
+    </div>
     </>
-  );
+  )
 };
 
 export default ChatContainer;
