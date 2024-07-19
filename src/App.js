@@ -1,4 +1,4 @@
-import ChatContainer from './component/ChatContainer';
+import ChatContainer from './component/ChatContainer2';
 import {Amplify} from 'aws-amplify';
 import awsExports from './aws-exports';
 import {withAuthenticator} from '@aws-amplify/ui-react'

@@ -6,7 +6,7 @@ import ExamplePrompt1 from './ExamplePrompt1';
 import ExamplePrompt2 from './ExamplePrompt2';
 import axios from 'axios';
 
-const apiGatewayEndpoint = 'https://6mm48fcg14.execute-api.us-east-1.amazonaws.com/dev';
+const apiGatewayEndpoint = 'https://6mm48fcg14.execute-api.us-east-1.amazonaws.com/dev/';
 
 const ChatContainer = ({signOut}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,28 +39,40 @@ const ChatContainer = ({signOut}) => {
 
 
   async function fetchChatbotResponse(message, accessToken, sessionId) {
-    
-    const url = `${apiGatewayEndpoint}?prompt=${encodeURIComponent(message)}&sessionId=${encodeURIComponent(sessionId || '')}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
+    const url = apiGatewayEndpoint;
+    const body = {
+      prompt: message,
+      sessionId: sessionId || ''
+    };
+  
+    try {
+      const response = await axios.post(url, body, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        //throw new Error(`HTTP error ${response.status}`);
       }
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
+  
+      const responseBody = response.data;
+      const desiredResponse = responseBody.generated_text.text;
+      const usedDocuments = responseBody.object_uris || [];
+      const newSessionId = responseBody.sessionId;
+  
+      setSessionId(newSessionId); // Update the sessionId state
+
+      return { response: desiredResponse, documents: usedDocuments };
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
   }
-
-  const data = await response.json();
-  const responseBody = JSON.parse(data.body);
-  const desiredResponse = responseBody.generated_text.text;
-  const usedDocuments = responseBody.object_uris || [];
-  const newSessionId = responseBody.sessionId;
-
-  setSessionId(newSessionId); // Update the sessionId state
-  return { response: desiredResponse, documents: usedDocuments};
-}
+  
+  
+  
 
 
 
