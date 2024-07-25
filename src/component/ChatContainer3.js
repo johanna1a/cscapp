@@ -198,7 +198,7 @@ const ChatContainer = ({ signOut }) => {
                     </Button>
                   }
                 >
-                  Chat
+                  CSC ChatBot
                 </Header>
               }
             >
