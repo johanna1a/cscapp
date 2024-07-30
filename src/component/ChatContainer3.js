@@ -39,11 +39,11 @@ const ChatContainer = ({ signOut }) => {
     }
   };
 
-  async function fetchChatbotResponse(message, accessToken, sessionId) {
+  async function fetchChatbotResponse(message, accessToken, currentSessionId) {
     const url = apiGatewayEndpoint;
     const body = {
       prompt: message,
-      sessionId: sessionId || ''
+      sessionId: currentSessionId || ''
     };
 
     try {
@@ -58,10 +58,14 @@ const ChatContainer = ({ signOut }) => {
       const desiredResponse = responseBody.generated_text.text;
       const usedDocuments = responseBody.object_uris || [];
       const newSessionId = responseBody.sessionId;
+      console.log(newSessionId);
 
-      setSessionId(newSessionId);
+      // Only update sessionId if it's not already set
+      if (!currentSessionId) {
+        setSessionId(newSessionId);
+      }
 
-      return { response: desiredResponse, documents: usedDocuments };
+      return { response: desiredResponse, documents: usedDocuments, sessionId: newSessionId };
     } catch (error) {
       console.error('Error:', error);
       throw error;
@@ -99,7 +103,12 @@ const ChatContainer = ({ signOut }) => {
         const accessToken = await getAccessToken();
         if (accessToken) {
           const { response, documents, sessionId: newSessionId } = await fetchChatbotResponse(message, accessToken, sessionId);
-          setSessionId(newSessionId);
+          
+          // Only update sessionId if it's not already set
+          if (!sessionId) {
+            setSessionId(newSessionId);
+          }
+
           if (response.includes("Sorry, I am unable to assist you with this request.")) {
             setShowPopup(true);
           }
