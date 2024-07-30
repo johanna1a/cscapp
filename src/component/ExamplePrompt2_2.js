@@ -6,7 +6,15 @@ const ExamplePrompt2 = ({ handlePromptClick }) => (
     variant="inline-link"
     onClick={() => handlePromptClick('Give me the GenAI developer productivity use case')}
   >
-    Describe the Blueprint and what you are looking for
+     <pre>
+{`
+
+State the Blueprint and what you are looking for
+
+Example: 
+Give me the GenAI developer productivity use case`}
+
+    </pre>
   </Button>
 );
 

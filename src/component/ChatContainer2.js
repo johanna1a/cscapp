@@ -40,6 +40,7 @@ const ChatContainer = ({signOut}) => {
 
   async function fetchChatbotResponse(message, accessToken, sessionId) {
     const url = apiGatewayEndpoint;
+    console.log("sessionId", sessionId)
     const body = {
       prompt: message,
       sessionId: sessionId || ''
@@ -61,7 +62,7 @@ const ChatContainer = ({signOut}) => {
       const desiredResponse = responseBody.generated_text.text;
       const usedDocuments = responseBody.object_uris || [];
       const newSessionId = responseBody.sessionId;
-  
+      console.log(newSessionId);
       setSessionId(newSessionId); // Update the sessionId state
 
       return { response: desiredResponse, documents: usedDocuments };
